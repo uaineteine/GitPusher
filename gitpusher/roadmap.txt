@@ -1,0 +1,5 @@
+﻿#####################################################################
+Alpha 1.2
+#########
+create new branch not just change the commiting one
+Error checking for change branch and remote names
