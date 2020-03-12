@@ -12,6 +12,7 @@ namespace GitPusher
         public static string curRemote = "origin";
         static string curbranchpre = "curbranch";
         static string curremotepre = "curremote";
+        static string versionpre = "v";
 
         public static bool Read()
         {
@@ -32,7 +33,7 @@ namespace GitPusher
             bool readbranch = true;
             try
             {
-                curBranchN = myDat["GitSettings"][curbranchpre];
+                curBranchN = myDat["GitPusherSettings"][curbranchpre];
             }
             catch
             {
@@ -45,13 +46,26 @@ namespace GitPusher
             bool readremote = true;
             try
             {
-                curRemote = myDat["GitSettings"][curremotepre];
+                curRemote = myDat["GitPusherSettings"][curremotepre];
             }
             catch
             {
                 readremote = false;
             }
             if (readremote)
+                success = true;
+            else
+                return false;
+            bool readversion = true;
+            try
+            {
+                string versionfile = myDat["GitPusherSettings"][versionpre];
+            }
+            catch
+            {
+                readversion = false;
+            }
+            if (readversion)
                 success = true;
             else
                 return false;
@@ -86,8 +100,9 @@ namespace GitPusher
             //wipe file
             
             //save file
-            data["GitSettings"][curbranchpre] = curBranchN;
-            data["GitSettings"][curremotepre] = curRemote;
+            data["GitPusherSettings"][curbranchpre] = curBranchN;
+            data["GitPusherSettings"][curremotepre] = curRemote;
+            data["GitPusherSettings"][versionpre] = VersionController.WriteVersionNoOnly();
             parser.WriteFile(configFN, data);
         }
         public static void PromptChangeBranch()
@@ -99,6 +114,25 @@ namespace GitPusher
         {
             Console.WriteLine("Current remote name?");
             ChangeCurRemote(Console.ReadLine());
+        }
+        public static void CheckoutNewBranch(string branchname)
+        {
+            curBranchN = branchname;
+            string[] cmnds = new string[1];
+            cmnds[0] = CMD.g("-b " + branchname);
+            CMD.CMDWithCommands(cmnds);
+            SaveConfig();
+        }
+        public static void PromptCheckoutNB()
+        {
+            Console.WriteLine("new branch name?");
+            string resp = Console.ReadLine();
+            //make sure it isn't the same branch name naturally
+            if (resp != curBranchN)
+            {
+                if (!resp.Contains(" "))//no spaces?
+                    CheckoutNewBranch(resp);
+            }
         }
     }
 }

@@ -5,6 +5,10 @@ namespace GitPusher
 {
     public static class CMD
     {
+        public static string g(string arg)
+        {
+            return "git " + arg;
+        }
         public static void CMDWithCommands(string[] commands)
         {
             //start up the command to run

@@ -8,7 +8,7 @@ namespace GitPusher
         static void Initalise()
         {
             string[] commands = new string[1];
-            commands[0] = "git init";
+            commands[0] = CMD.g("init");
             CMD.CMDWithCommands(commands);
         }
 
@@ -29,15 +29,15 @@ namespace GitPusher
             GitIgnore.GitIgnorecheck();
 
             string[] strCmds = new string[3];
-            strCmds[0] = "git add --all";
-            strCmds[1] = "git commit -m \"" + msg + "\"";
-            strCmds[2] = "git push " + Settings.curRemote;
-            strCmds[2] += " " + Settings.curBranchN;
+            strCmds[0] = CMD.g("add--all");
+            strCmds[1] = CMD.g("commit - m \"" + msg + "\"");
+            strCmds[2] = CMD.g("push " + Settings.curRemote + " " + Settings.curBranchN);
             //execute
             CMD.CMDWithCommands(strCmds);
         }
         static void ExitPrint()
         {
+            Console.WriteLine();//added a new blank space for neatness
             Console.WriteLine("El fino");
             Console.WriteLine("Press any key to exit");
             Console.Read();
@@ -50,41 +50,59 @@ namespace GitPusher
             VersionController.WriteVersion();
             UI.white();
 
-            bool workedReading = Settings.Read();
-            //Settings.ChangeCurBranch("thisbranch");//can change branch like this
-            if (!workedReading)
+            while (true)
             {
-                UI.red();
-                Console.WriteLine("Couldn't read config file in:");
-                Console.WriteLine(" " + Settings.configFN);
-                Console.WriteLine("aborting...");
-                UI.white();
-                //give offer to return default file
-            }
-            else
-            {
-                //now check if there is an init folder
-                IsInit();
-                //now ask about pushing
-                Console.WriteLine("give commit message for auto push or enter a setting");
-                Console.WriteLine("Settings are:");
-                UI.green();
-                Console.WriteLine("(b) change current branch to commit on");
-                Console.WriteLine("(r) change remote branch to commit on");
-                UI.white();
-                //Console.WriteLine("Wish to add all and push? (y/n)");-obsolete
-                string resp = Console.ReadLine();
-                if (resp == "b")
+                bool workedReading = Settings.Read();
+                //Settings.ChangeCurBranch("thisbranch");//can change branch like this
+                if (!workedReading)
                 {
-                    Settings.PromptChangeBranch();
-                }
-                else if (resp == "r")
-                {
-                    Settings.PromptChangeRemote();
+                    UI.red();
+                    Console.WriteLine("Couldn't read config file in:");
+                    Console.WriteLine(" " + Settings.configFN);
+                    Console.WriteLine("aborting...");
+                    UI.white();
+                    //give offer to return default file
                 }
                 else
                 {
-                    PushAll(resp);
+                    //now check if there is an init folder
+                    IsInit();
+                    //now ask about pushing
+                    Console.WriteLine("give commit message for auto push or enter a setting");
+                    Console.WriteLine("Settings are:");
+                    UI.green();
+                    Console.WriteLine("(b)  change current branch to commit on");
+                    Console.WriteLine("(cb) create/checkout new branch from current commit and push to this");
+                    Console.WriteLine("(r)  change remote branch to commit on");
+                    Console.WriteLine("(l)  see license info");
+                    Console.WriteLine("(q)  quit program");
+                    UI.white();
+                    //Console.WriteLine("Wish to add all and push? (y/n)");-obsolete
+                    string resp = Console.ReadLine();
+                    if (resp == "b")
+                    {
+                        Settings.PromptChangeBranch();
+                    }
+                    else if (resp == "r")
+                    {
+                        Settings.PromptChangeRemote();
+                    }
+                    else if (resp == "cb")
+                    {
+                        Settings.PromptCheckoutNB();
+                    }
+                    else if (resp == "l")
+                    {
+                        Licence.DisplayScreen();
+                    }
+                    else if (resp == "q")
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        PushAll(resp);
+                    }
                 }
             }
             //exit bit after that

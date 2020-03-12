@@ -1,5 +1,5 @@
 ﻿#####################################################################
-Alpha 1.2
+Alpha 1.3
 #########
-create new branch not just change the commiting one
-Error checking for change branch and remote names
+Add remote names to use, inlcuding the ability for multiple remotes
+Error checking for change branch and remote names with feedback direclty from the command call

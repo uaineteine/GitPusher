@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="CMD.cs" />
     <Compile Include="GitIgnore.cs" />
+    <Compile Include="Licence.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
@@ -60,6 +61,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="gitpusher\NuGetPackages.txt" />

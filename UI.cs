@@ -25,6 +25,12 @@ namespace GitPusher
         {
             Console.ForegroundColor = ConsoleColor.Green;
         }
+
+        public static void blank(int n)
+        {
+            for (int i = 0; i < n; i++)
+                Console.WriteLine();
+        }
         #endregion
     }
 }
