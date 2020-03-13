@@ -80,7 +80,7 @@ namespace GitPusher
     }
     public static class VersionController
     {
-        static Version curVers = new Version(new int[] { 1, 3, 0 }, "alpha", true);
+        static Version curVers = new Version(new int[] { 1, 3, 1 }, "alpha", false);
 
         public static void WriteVersion()
         {
