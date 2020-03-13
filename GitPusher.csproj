@@ -66,6 +66,7 @@
   <ItemGroup>
     <Content Include="gitpusher\NuGetPackages.txt" />
     <Content Include="gitpusher\roadmap.txt" />
+    <EmbeddedResource Include="help.txt" />
     <EmbeddedResource Include="LICENSE" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

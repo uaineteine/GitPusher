@@ -13,23 +13,7 @@ namespace GitPusher
 
         public static void DisplayScreen()
         {
-            Console.Clear();
-            var resourceName = "GitPusher." + fn;
-            var assembly = Assembly.GetExecutingAssembly();
-            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                string line;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    Console.WriteLine(line);
-                }
-            }
-
-            UI.blank(2);
-            Console.WriteLine("Enter to exit");
-            Console.ReadLine();
-            Console.Clear();
+            UI.displayFilesScreen(fn);
         }
     }
 }

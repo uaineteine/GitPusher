@@ -32,7 +32,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Roadmap
 
-**Alpha 1.3**
+**Alpha 1.4**
 
->add remote names to use
->error checking for change branch and remote names with feedback direclty from the command call
+>error checking for change branch and remote names with feedback directly from the command call
+
+>ability to merge branches

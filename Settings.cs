@@ -1,7 +1,8 @@
 ﻿using IniParser;
 using IniParser.Model;
 using System;
-using System.IO;
+using System.Collections.Generic;
+using System.Text;
 
 namespace GitPusher
 {
@@ -9,10 +10,16 @@ namespace GitPusher
     {
         public static string configFN = "gitpusher/config.ini";
         public static string curBranchN = "master";
-        public static string curRemote = "origin";
+        public static int numRemotes = 1;
+        public static List<string> curRemote = new List<string>();
         static string curbranchpre = "curbranch";
-        static string curremotepre = "curremote";
+        static string curremotepre = "remote";
         static string versionpre = "v";
+
+        static Settings()
+        {
+            curRemote.Add("origin");
+        }
 
         public static bool Read()
         {
@@ -43,10 +50,22 @@ namespace GitPusher
                 success = true;
             else
                 return false;
-            bool readremote = true;
+            bool readremote = true; 
             try
             {
-                curRemote = myDat["GitPusherSettings"][curremotepre];
+                //read remote
+                string remotearray = myDat["GitPusherSettings"][curremotepre];
+                string[] rarr = remotearray.Split(',');
+                curRemote.Clear();
+                //check to make sure there are no spaces on any of those
+                for (int i = 0; i < rarr.Length; i++)
+                {
+                    if (rarr[i].Contains(" "))
+                        rarr[i] = RemoveSpace(rarr[i]);
+                    curRemote.Add(rarr[i]);
+                    numRemotes = curRemote.Count;
+                }
+                //now that we have no 'white spaces'
             }
             catch
             {
@@ -72,24 +91,56 @@ namespace GitPusher
             //got this far exit with a yay
             return success;
         }
+
+        private static string RemoveSpace(string inp)
+        {
+            return inp.Replace(" ", "");
+        }
+
+        private static string getRemotesString(bool withspaces)
+        {
+            StringBuilder sb = new StringBuilder();
+            int i = 0;
+            foreach (string item in curRemote)
+            {
+                sb.Append(item);
+                if (i < curRemote.Count - 1)
+                    if (withspaces)
+                        sb.Append(", ");
+                    else
+                        sb.Append(",");
+                i += 1;
+            }
+            return sb.ToString();
+        }
+
         public static void PrintLoadSuccess()
         {
             UI.white();
             Console.WriteLine("Load Sucess:");
             UI.cyan();
-            Console.WriteLine(" Current Branch: " + curBranchN);
-            Console.WriteLine(" Current Remote: " + curRemote);
+            Console.WriteLine(" Current Branch:  " + curBranchN);
+            Console.Write(" Current Remotes: ");
+            Console.Write(getRemotesString(true));
+            Console.WriteLine();
             UI.white();
         }
+
+        public static void PromptAddRemote()
+        {
+            Console.WriteLine("new remote name?");
+            AddRemote(Console.ReadLine());
+        }
+
         public static void ChangeCurBranch(string newBranch)
         {
             curBranchN = newBranch;
             SaveConfig();
             PrintLoadSuccess();
         }
-        public static void ChangeCurRemote(string newRemote)
+        public static void ChangeRemote(int i, string newRemote)
         {
-            curRemote = newRemote;
+            curRemote[i] = newRemote;
             SaveConfig();
             PrintLoadSuccess();
         }
@@ -101,7 +152,7 @@ namespace GitPusher
             
             //save file
             data["GitPusherSettings"][curbranchpre] = curBranchN;
-            data["GitPusherSettings"][curremotepre] = curRemote;
+            data["GitPusherSettings"][curremotepre] = getRemotesString(false);
             data["GitPusherSettings"][versionpre] = VersionController.WriteVersionNoOnly();
             parser.WriteFile(configFN, data);
         }
@@ -112,8 +163,9 @@ namespace GitPusher
         }
         public static void PromptChangeRemote()
         {
-            Console.WriteLine("Current remote name?");
-            ChangeCurRemote(Console.ReadLine());
+            int i = getRemoteIndex("Select which remote to change");
+            Console.WriteLine("new remote name?");
+            ChangeRemote(i, Console.ReadLine());
         }
         public static void CheckoutNewBranch(string branchname)
         {
@@ -133,6 +185,45 @@ namespace GitPusher
                 if (!resp.Contains(" "))//no spaces?
                     CheckoutNewBranch(resp);
             }
+        }
+
+        public static void AddRemote(string remoteN)
+        {
+            curRemote.Add(remoteN);
+            numRemotes += 1;
+            SaveConfig();
+        }
+
+        private static void removeRemIndex(int i)
+        {
+            curRemote.RemoveAt(i);
+            numRemotes -= 1;
+        }
+
+        private static void printRemoteIndexes(string msg)
+        {
+            Console.WriteLine(msg);
+            UI.green();
+            for (int i = 0; i < numRemotes; i++)
+            {
+                Console.WriteLine(curRemote[i] + "(" + i.ToString() + ")");
+            }
+            UI.white();
+            Console.WriteLine();
+        }
+
+        public static int getRemoteIndex(string msg)
+        {
+            printRemoteIndexes(msg);
+            string resp = Console.ReadLine();
+            return Convert.ToInt32(resp);
+        }
+
+        public static void RemoveRemote()
+        {
+            int gind = getRemoteIndex("select which remote to remove by index");
+            removeRemIndex(gind);
+            SaveConfig();
         }
     }
 }

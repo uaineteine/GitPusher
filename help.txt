@@ -1,0 +1,4 @@
+﻿Git creditional storing is required in that project folder.
+Use with git "git config credential.helper store".
+Give a message argument to commit and push all changes to the current branch and remote(s).
+Otherwise give a command to change/add/remove remotes or the current active branch the git is using.

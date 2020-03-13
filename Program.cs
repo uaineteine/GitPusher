@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 
 namespace GitPusher
 {
@@ -31,7 +32,11 @@ namespace GitPusher
             string[] strCmds = new string[3];
             strCmds[0] = CMD.g("add--all");
             strCmds[1] = CMD.g("commit - m \"" + msg + "\"");
-            strCmds[2] = CMD.g("push " + Settings.curRemote + " " + Settings.curBranchN);
+            for (int i = 0; i < Settings.curRemote.Count; i++)
+            {
+                int k = 2 + i;
+                strCmds[k] = CMD.g("push " + Settings.curRemote[i] + " " + Settings.curBranchN);
+            }
             //execute
             CMD.CMDWithCommands(strCmds);
         }
@@ -39,8 +44,6 @@ namespace GitPusher
         {
             Console.WriteLine();//added a new blank space for neatness
             Console.WriteLine("El fino");
-            Console.WriteLine("Press any key to exit");
-            Console.Read();
         }
 
         static void Main(string[] args)
@@ -65,17 +68,22 @@ namespace GitPusher
                 }
                 else
                 {
+                    Console.WriteLine();
                     //now check if there is an init folder
                     IsInit();
                     //now ask about pushing
                     Console.WriteLine("give commit message for auto push or enter a setting");
                     Console.WriteLine("Settings are:");
                     UI.green();
-                    Console.WriteLine("(b)  change current branch to commit on");
-                    Console.WriteLine("(cb) create/checkout new branch from current commit and push to this");
-                    Console.WriteLine("(r)  change remote branch to commit on");
-                    Console.WriteLine("(l)  see license info");
-                    Console.WriteLine("(q)  quit program");
+                    Console.WriteLine("(b)    change current branch to commit on");
+                    Console.WriteLine("(cb)   create/checkout new branch from current commit and push to this");
+                    Console.WriteLine("(r)    change remote to commit on");
+                    Console.WriteLine("(ar)   add remote to commit on");
+                    Console.WriteLine("(rr)   remove remote to commit on");
+                    Console.WriteLine("(cmd)  pure cmd input");
+                    Console.WriteLine("(l)    see license info");
+                    Console.WriteLine("(help) help!");
+                    Console.WriteLine("(q)   quit program");
                     UI.white();
                     //Console.WriteLine("Wish to add all and push? (y/n)");-obsolete
                     string resp = Console.ReadLine();
@@ -87,16 +95,36 @@ namespace GitPusher
                     {
                         Settings.PromptChangeRemote();
                     }
+                    else if (resp == "ar")
+                    {
+                        Settings.PromptAddRemote();
+                    }
+                    else if (resp == "rr")
+                    {
+                        Settings.RemoveRemote();
+                    }
                     else if (resp == "cb")
                     {
                         Settings.PromptCheckoutNB();
+                    }
+                    else if (resp == "cmd")
+                    {
+                        Console.WriteLine("Give command for cmd to run");
+                        string[] cmds = new string[1];
+                        cmds[0] = Console.ReadLine();
+                        CMD.CMDWithCommands(cmds);
                     }
                     else if (resp == "l")
                     {
                         Licence.DisplayScreen();
                     }
+                    else if (resp == "help")
+                    {
+                        DisplayHelp();
+                    }
                     else if (resp == "q")
                     {
+                        ExitPrint();
                         break;
                     }
                     else
@@ -104,9 +132,14 @@ namespace GitPusher
                         PushAll(resp);
                     }
                 }
+                Console.WriteLine();
             }
-            //exit bit after that
-            ExitPrint();
+            //all done either reloop or quit
+        }
+
+        private static void DisplayHelp()
+        {
+            UI.displayFilesScreen("help.txt");
         }
     }
 }
