@@ -55,5 +55,12 @@ namespace GitPusher
             Console.ReadLine();
             Console.Clear();
         }
+
+        public static void giveWarning(string msg)
+        {
+            UI.yellow();
+            Console.WriteLine("WARNINGL: " + msg);
+            UI.white();
+        }
     }
 }

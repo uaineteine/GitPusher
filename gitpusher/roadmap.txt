@@ -1,10 +1,5 @@
 ﻿#########
-Alpha 1.3
-#########
-Add remote names to use, inlcuding the ability for multiple remotes
-
-#########
-Alpha 1.4
+Beta 1.0.1
 #########
 Error checking for change branch and remote names with feedback directly from the command call
-ability to merge branches
+-> "git rev-parse --abbrev-ref HEAD" to retrieve branch name

@@ -79,6 +79,11 @@ namespace GitPusher
             try
             {
                 string versionfile = myDat["GitPusherSettings"][versionpre];
+                string curVersion = VersionController.WriteVersionNoOnly();
+                if (versionfile != curVersion)
+                {
+                    UI.giveWarning("Different version used in saved config data");
+                }
             }
             catch
             {

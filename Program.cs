@@ -31,7 +31,7 @@ namespace GitPusher
 
             string[] strCmds = new string[3];
             strCmds[0] = CMD.g("add--all");
-            strCmds[1] = CMD.g("commit - m \"" + msg + "\"");
+            strCmds[1] = CMD.g("commit -m \"" + msg + "\"");
             for (int i = 0; i < Settings.curRemote.Count; i++)
             {
                 int k = 2 + i;
@@ -80,6 +80,7 @@ namespace GitPusher
                     Console.WriteLine("(r)    change remote to commit on");
                     Console.WriteLine("(ar)   add remote to commit on");
                     Console.WriteLine("(rr)   remove remote to commit on");
+                    Console.WriteLine("(m)    merge current branch to another");
                     Console.WriteLine("(cmd)  pure cmd input");
                     Console.WriteLine("(l)    see license info");
                     Console.WriteLine("(help) help!");
@@ -106,6 +107,30 @@ namespace GitPusher
                     else if (resp == "cb")
                     {
                         Settings.PromptCheckoutNB();
+                    }
+                    else if (resp == "m")
+                    {
+                        Console.WriteLine("Give branch to merge to:");
+                        string mergeto = Console.ReadLine();
+                        Console.WriteLine("choose option:");
+                        UI.green();
+                        Console.WriteLine("(0) regular merge");
+                        Console.WriteLine("(1) squash merge");
+                        UI.white();
+                        string select = Console.ReadLine();
+                        bool mergeT = false;//merge type-regular
+                        //using switch to allow conversion to int
+                        switch(Convert.ToInt32(select))
+                        {
+                            case 1:
+                                mergeT = true;
+                                break;
+
+                            default:
+                                mergeT = false;
+                                break;
+                        }
+                        Merge(mergeto, mergeT);
                     }
                     else if (resp == "cmd")
                     {
@@ -135,6 +160,17 @@ namespace GitPusher
                 Console.WriteLine();
             }
             //all done either reloop or quit
+        }
+
+        private static void Merge(string branch, bool squash)
+        {
+            string[] cmds = new string[2];
+            cmds[0] = CMD.g("checkout " + branch);//checkout this one
+            if (squash == false)
+                cmds[1] = CMD.g("merge " + Settings.curBranchN);//merge this one in, regular fast forward
+            else
+                cmds[1] = CMD.g("merge --squash" + Settings.curBranchN);
+            CMD.CMDWithCommands(cmds);
         }
 
         private static void DisplayHelp()

@@ -25,13 +25,15 @@ namespace GitPusher
 
         public string ToStr()
         {
+            string toadd = specialAttr;
             if (specialAttr.Length > 0)
-                specialAttr += " ";
+                toadd += " ";
+
             StringBuilder output = new StringBuilder();
             //if indev say so
             if (indev)
                 output.Append("InDev ");
-            output.Append(specialAttr);
+            output.Append(toadd);
             for (int i = 0; i < depth; i++)
             {
                 output.Append(versionNo[i].ToString());
@@ -80,7 +82,7 @@ namespace GitPusher
     }
     public static class VersionController
     {
-        static Version curVers = new Version(new int[] { 1, 3, 1 }, "alpha", false);
+        static Version curVers = new Version(new int[] { 1, 0 }, "beta", false);
 
         public static void WriteVersion()
         {
