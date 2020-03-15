@@ -27,13 +27,13 @@ namespace GitPusher
         {
             Console.ForegroundColor = ConsoleColor.Green;
         }
+        #endregion
 
         public static void blank(int n)
         {
             for (int i = 0; i < n; i++)
                 Console.WriteLine();
         }
-        #endregion
 
         public static void displayFilesScreen(string fn)
         {
@@ -59,7 +59,7 @@ namespace GitPusher
         public static void giveWarning(string msg)
         {
             UI.yellow();
-            Console.WriteLine("WARNINGL: " + msg);
+            Console.WriteLine("WARNING: " + msg);
             UI.white();
         }
     }

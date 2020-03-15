@@ -32,6 +32,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Roadmap
 
-**Beta 1.0.1**
+**Beta 2.0**
 
->error checking for change branch and remote names with feedback directly from the command call
+* Move to .NET core and make compatiable with linux

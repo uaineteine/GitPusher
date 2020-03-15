@@ -1,5 +1,4 @@
 ﻿#########
-Beta 1.0.1
+Beta 2.0
 #########
-Error checking for change branch and remote names with feedback directly from the command call
--> "git rev-parse --abbrev-ref HEAD" to retrieve branch name
+Move to .NET core and make compatiable with linux

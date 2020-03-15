@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CMD.cs" />
-    <Compile Include="GitIgnore.cs" />
+    <Compile Include="git.cs" />
     <Compile Include="Licence.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

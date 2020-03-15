@@ -12,8 +12,8 @@ namespace GitPusher
         public static string curBranchN = "master";
         public static int numRemotes = 1;
         public static List<string> curRemote = new List<string>();
-        static string curbranchpre = "curbranch";
-        static string curremotepre = "remote";
+        //static string curbranchpre = "curbranch";-obselete
+        //static string curremotepre = "remote";-obselete
         static string versionpre = "v";
 
         static Settings()
@@ -28,53 +28,25 @@ namespace GitPusher
             FileIniDataParser configFile = new FileIniDataParser();
             IniData configDat = configFile.ReadFile(Settings.configFN);
             //now what to do?
+
+            bool feedbackb = false;
+            curBranchN = git.getBranchFeedback(out feedbackb);
+
+            bool feedbackr = false;
+            curRemote.Clear();
+            curRemote.AddRange(git.getRemoteNames(out feedbackr));
+
             bool worked = Settings.ReadDatFile(configDat);
-            if (worked)
+            if (worked & feedbackb & feedbackr)
                 PrintLoadSuccess();
+            else
+                worked = false;
             return worked;
         }
         public static bool ReadDatFile(IniData myDat)//read success bool returned
         {
             bool success = false;
 
-            bool readbranch = true;
-            try
-            {
-                curBranchN = myDat["GitPusherSettings"][curbranchpre];
-            }
-            catch
-            {
-                readbranch = false;
-            }
-            if (readbranch)
-                success = true;
-            else
-                return false;
-            bool readremote = true; 
-            try
-            {
-                //read remote
-                string remotearray = myDat["GitPusherSettings"][curremotepre];
-                string[] rarr = remotearray.Split(',');
-                curRemote.Clear();
-                //check to make sure there are no spaces on any of those
-                for (int i = 0; i < rarr.Length; i++)
-                {
-                    if (rarr[i].Contains(" "))
-                        rarr[i] = RemoveSpace(rarr[i]);
-                    curRemote.Add(rarr[i]);
-                    numRemotes = curRemote.Count;
-                }
-                //now that we have no 'white spaces'
-            }
-            catch
-            {
-                readremote = false;
-            }
-            if (readremote)
-                success = true;
-            else
-                return false;
             bool readversion = true;
             try
             {
@@ -153,18 +125,9 @@ namespace GitPusher
         {
             var parser = new FileIniDataParser();
             IniData data = parser.ReadFile(configFN);
-            //wipe file
-            
             //save file
-            data["GitPusherSettings"][curbranchpre] = curBranchN;
-            data["GitPusherSettings"][curremotepre] = getRemotesString(false);
             data["GitPusherSettings"][versionpre] = VersionController.WriteVersionNoOnly();
             parser.WriteFile(configFN, data);
-        }
-        public static void PromptChangeBranch()
-        {
-            Console.WriteLine("Current branch name?");
-            ChangeCurBranch(Console.ReadLine());
         }
         public static void PromptChangeRemote()
         {
@@ -176,12 +139,17 @@ namespace GitPusher
         {
             curBranchN = branchname;
             string[] cmnds = new string[1];
-            cmnds[0] = CMD.g("-b " + branchname);
-            CMD.CMDWithCommands(cmnds);
+            cmnds[0] = git.g("-b " + branchname);
+            string[] lineoutput = CMD.CMDcmdsLines(cmnds, true);
             SaveConfig();
         }
         public static void PromptCheckoutNB()
         {
+            //first work out if we want to chekout a 'new' branch?
+            //we might not
+            //can we use feedback for this
+            //I think we can by checking if we can checkout to it
+
             Console.WriteLine("new branch name?");
             string resp = Console.ReadLine();
             //make sure it isn't the same branch name naturally
