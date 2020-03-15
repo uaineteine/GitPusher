@@ -107,7 +107,7 @@ namespace GitPusher
             GitIgnore.GitIgnorecheck();
 
             string[] strCmds = new string[3];
-            strCmds[0] = git.g("add--all");
+            strCmds[0] = git.g("add --all");
             strCmds[1] = git.g("commit -m \"" + msg + "\"");
             for (int i = 0; i < Settings.curRemote.Count; i++)
             {
