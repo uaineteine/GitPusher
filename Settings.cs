@@ -1,6 +1,4 @@
-﻿using IniParser;
-using IniParser.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,11 +6,11 @@ namespace GitPusher
 {
     public static class Settings
     {
+        static IniParser parser;
         public static string configFN = "gitpusher/config.ini";
+        static string mainsec = "GitPusherSettings";
         public static string curBranchN = "master";
-        public static int numRemotes = 1;
         public static List<string> curRemote = new List<string>();
-        //static string curbranchpre = "curbranch";-obselete
         static string curremotepre = "remote";
         static string versionpre = "v";
 
@@ -25,25 +23,20 @@ namespace GitPusher
         {
             Console.WriteLine("Reading your config file");
             //load up my file here
-            FileIniDataParser configFile = new FileIniDataParser();
-            IniData configDat = configFile.ReadFile(Settings.configFN);
-            //now what to do?
+            parser = new IniParser(configFN);
+            parser.Read();
 
             bool feedbackb = false;
             curBranchN = git.getBranchFeedback(out feedbackb);
 
-            //bool feedbackr = false;
-            //curRemote.Clear();
-            //curRemote.AddRange(git.getRemoteNames(out feedbackr));
-
-            bool worked = Settings.ReadDatFile(configDat);
+            bool worked = Settings.ReadDatFile(parser);
             if (worked & feedbackb)
                 PrintLoadSuccess();
             else
                 worked = false;
             return worked;
         }
-        public static bool ReadDatFile(IniData myDat)//read success bool returned
+        public static bool ReadDatFile(IniParser parser)//read success bool returned
         {
             bool success = false;
 
@@ -51,7 +44,7 @@ namespace GitPusher
             try
             {
                 //read remote
-                string remotearray = myDat["GitPusherSettings"][curremotepre];
+                string remotearray = parser.getDatFromKey(mainsec, curremotepre);
                 string[] rarr = remotearray.Split(',');
                 curRemote.Clear();
                 //check to make sure there are no spaces on any of those
@@ -60,7 +53,6 @@ namespace GitPusher
                     if (rarr[i].Contains(" "))
                         rarr[i] = StringFilter.RemoveSpace(rarr[i]);
                     curRemote.Add(rarr[i]);
-                    numRemotes = curRemote.Count;
                 }
                 //now no white spaces
             }
@@ -76,7 +68,7 @@ namespace GitPusher
             bool readversion = true;
             try
             {
-                string versionfile = myDat["GitPusherSettings"][versionpre];
+                string versionfile = parser.getDatFromKey(mainsec, versionpre);
                 string curVersion = VersionController.WriteVersionNoOnly();
                 if (versionfile != curVersion)
                 {
@@ -140,12 +132,9 @@ namespace GitPusher
         }
         public static void SaveConfig()
         {
-            var parser = new FileIniDataParser();
-            IniData data = parser.ReadFile(configFN);
-            //save file
-            data["GitPusherSettings"][versionpre] = VersionController.WriteVersionNoOnly();
-            data["GitPusherSettings"][curremotepre] = getRemotesString(false);
-            parser.WriteFile(configFN, data);
+            parser.SetKey(mainsec, versionpre, VersionController.WriteVersionNoOnly());
+            parser.SetKey(mainsec, curremotepre, getRemotesString(false));
+            parser.Save();
         }
         public static void PromptChangeRemote()
         {
@@ -197,13 +186,11 @@ namespace GitPusher
         public static void AddRemote(string remoteN)
         {
             curRemote.Add(remoteN);
-            numRemotes += 1;
             SaveConfig();
         }
         private static void removeRemIndex(int i)
         {
             curRemote.RemoveAt(i);
-            numRemotes -= 1;
         }
         public static void RemoveRemote()
         {

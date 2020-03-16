@@ -32,10 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="INIFileParser, Version=2.5.2.0, Culture=neutral, PublicKeyToken=79af7b307b65cf3c, processorArchitecture=MSIL">
-      <HintPath>packages\ini-parser.2.5.2\lib\net20\INIFileParser.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,6 +44,7 @@
   <ItemGroup>
     <Compile Include="CMD.cs" />
     <Compile Include="git.cs" />
+    <Compile Include="IniReader.cs" />
     <Compile Include="Licence.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -61,11 +58,9 @@
     <None Include="gitpusher\config.ini">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="packages.config" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="gitpusher\NuGetPackages.txt" />
     <Content Include="gitpusher\roadmap.txt" />
     <EmbeddedResource Include="help.txt" />
     <EmbeddedResource Include="LICENSE" />
