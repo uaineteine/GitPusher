@@ -2,7 +2,7 @@
 
 A source control productivity booster. This program stores your current development branch and remote, both committing and pushing all changes with a single argument input. This is ideal for rapid commits and pushing when the development becomes intense.
 
-* Note this program is in beta, bugs are to be expected until full release.
+**Note:** this program is in beta, bugs are to be expected until full release.
 
 ## Getting Started
 
@@ -12,17 +12,34 @@ Compling yourself: Use Visual Studio and the project file to create either a new
 
 Git
 
-This project is target for .NET 4.5. It should be compliant with earlier versions of course, however when compiling with VS, one will have to change the project settings.
+This project is target for .NET core 3. It should be compliant with earlier versions of course, however when compiling with VS, one will have to change the project settings.
 
-Currently it is only developed for windows but linux development is eyeed for the future. See the [roadmap](## Roadmap) section below.
+Currently it is only developed for Windows but linux support is eyed for the future. See the [roadmap](#Roadmap) section below.
 
 ### Built With
+
+**Beta 1.0.3** and earlier versions required an Ini-Parser package:
 
 * [Ini-Parser](https://github.com/rickyah/ini-parser) by [rickyah](https://github.com/rickyah) - The INI file parser library which is required to compile the software. [GitHub](https://github.com/rickyah/ini-parser) |  [NuGet](https://www.nuget.org/packages/ini-parser/)
 
 ### Installing
 
-Copy the built app into your working directory. Git creditional storing is required in that project folder. Use with git "git config credential.helper store".
+##### Building with Windows:
+
+Use Visual Studio to build the project file into an executable, deploy to the working directory of any future project you are making.
+
+##### Building with Linux:
+
+Open terminal/cmd and use .NET core to build with:
+
+```
+dotnet publish -c release -r ubuntu.16.04-x64 --self-contained
+```
+
+For either platform the built app into your working directory. Git creditional storing is required in that project folder. Set with:
+```
+git config credential.helper store
+```
 
 ## Authors
 
@@ -34,6 +51,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Roadmap
 
-**Beta 2.0**
+**Beta 2.1**
 
-* Move to .NET core and make compatiable with linux
+* Complete linux use
+* GUI app

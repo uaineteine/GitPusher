@@ -1,4 +1,5 @@
 ﻿#########
-Beta 2.0
+Beta 2.1
 #########
-Move to .NET core and make compatiable with linux
+Complete linux use
+GUI app
