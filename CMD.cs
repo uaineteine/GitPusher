@@ -37,43 +37,9 @@ namespace GitPusher
             string[] finalout = new string[lines.Length - noLinestoSkip];
             for (int i = 0; i < lines.Length - noLinestoSkip; i++)
             {
-                finalout[i] = cleanLine(lines[i + noLinestoSkip]);
+                finalout[i] = StringFilter.cleanLine(lines[i + noLinestoSkip]);
             }
             return finalout;
-        }
-        private static string cleanLine(string input)
-        {
-            //clean dir start if applicable
-            string output = cleanDir(input);
-            //now remove tabs
-            output = cleanTabs(output);
-            return cleanCarrige(output);
-        }
-        private static string cleanTabs(string input)
-        {
-            int index = input.IndexOf("\t");
-            if (index == 0)
-                return input.Remove(0, 1);
-            else
-                return input;
-        }
-        private static string cleanDir(string input)
-        {
-            int index = input.IndexOf(">");
-            if (index > 0)
-                return input.Remove(0, index + 1);
-            else
-                return input;
-        }
-        private static string cleanCarrige(string input)
-        {
-            int index = input.IndexOf("\r");
-            if (index == 0)
-                input = input.Remove(0, index + 1);
-            index = input.IndexOf("\r");
-            if (index > 0 & index == input.Length - 1)
-                input = input.Remove(index, 1);
-            return input;
         }
     }
 }

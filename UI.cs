@@ -62,5 +62,37 @@ namespace GitPusher
             Console.WriteLine("WARNING: " + msg);
             UI.white();
         }
+
+        private static void printIndexes(string msg, string[] options)
+        {
+            Console.WriteLine(msg);
+            UI.green();
+            for (int i = 0; i < options.Length; i++)
+            {
+                Console.WriteLine(options[i] + "(" + i.ToString() + ")");
+            }
+            UI.white();
+            Console.WriteLine();
+        }
+        public static int getIndex(string msg, string[] options)
+        {
+            int o = 0;
+            while (true)
+            {
+                printIndexes(msg, options);
+                string resp = Console.ReadLine();
+                try
+                {
+                    o = Convert.ToInt32(resp);
+                    break;
+                }
+                catch
+                {
+                    //didn't work
+                    Console.WriteLine("Please give intger without any spaces");
+                }
+            }
+            return o;
+        }
     }
 }

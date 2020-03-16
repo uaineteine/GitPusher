@@ -10,6 +10,39 @@ namespace GitPusher
         {
             return "git " + arg;
         }
+        private static string[] removeEmpty(string[] input)
+        {
+            List<string> cleaned = new List<string>();
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i] != "")
+                    cleaned.Add(input[i]);
+            }
+            return cleaned.ToArray();
+        }
+        public static string[] getAllBranchNames()
+        {
+            string[] c = new string[1];
+            c[0] = git.g("branch");
+            string[] feedback = CMD.CMDcmdsLines(c, false);
+            //now filter
+            string[] cleaned = new string[feedback.Length - 1];
+            for(int i = 0; i < feedback.Length - 1; i++)
+            {
+                int k = i + 1;
+                cleaned[i] = StringFilter.filterAstrix(feedback[k]);
+            }
+            //now to rid of empty entries
+            string[] emptied = removeEmpty(cleaned);
+            if (emptied.Length == 0)
+            {
+                //nothing so we must return the current branch
+                string curBranch = Settings.curBranchN;
+                return new string[] { curBranch };
+            }
+            else
+                return emptied;
+        }
         private static string filterOriginName(string inp)
         {
             int index = inp.IndexOf("\t");
@@ -38,7 +71,7 @@ namespace GitPusher
                     int k = i + 1;
                     filtered[i] = filterOriginName(feedback[k]);
                 }
-                return FindDouble(filtered);
+                return StringFilter.FindDouble(filtered);
             }
             else
             {
@@ -47,22 +80,6 @@ namespace GitPusher
                 return new string[] { err };
             }
         }
-
-        private static string[] FindDouble(string[] filtered)
-        {
-            List<string> output = new List<string>();
-            string last = "";
-            for (int i = 0; i < filtered.Length; i++)
-            {
-                string cur = filtered[i];
-                if (cur == last)
-                    if (cur.Length > 0)
-                        output.Add(cur);
-                last = cur;
-            }
-            return output.ToArray();
-        }
-
         public static string getBranchFeedback(out bool success)
         {
             string[] cmds = new string[1];

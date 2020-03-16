@@ -17,12 +17,10 @@ namespace GitPusher
             this.specialAttr = special;
             this.indev = devbool;
         }
-
         public void changeDevStatus(bool newstatus)
         {
             indev = newstatus;
         }
-
         public string ToStr()
         {
             string toadd = specialAttr;
@@ -42,7 +40,6 @@ namespace GitPusher
             }
             return output.ToString();
         }
-
         public bool isANewer(Version a)
         {
             bool newer = false;
@@ -60,7 +57,6 @@ namespace GitPusher
             }
             return newer;
         }
-
         //if b > a                                          return 0
         //if a > b                                          return 1
         //a and b the same                                  return 2
@@ -82,7 +78,7 @@ namespace GitPusher
     }
     public static class VersionController
     {
-        static Version curVers = new Version(new int[] { 1, 0, 2}, "beta", false);
+        static Version curVers = new Version(new int[] { 1, 0, 3}, "beta", false);
 
         public static void WriteVersion()
         {

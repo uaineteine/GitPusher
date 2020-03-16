@@ -2,6 +2,8 @@
 
 A source control productivity booster. This program stores your current development branch and remote, both committing and pushing all changes with a single argument input. This is ideal for rapid commits and pushing when the development becomes intense.
 
+* Note this program is in beta, bugs are to be expected until full release.
+
 ## Getting Started
 
 Compling yourself: Use Visual Studio and the project file to create either a new project to be modified or add to a solution for use as a DLL.

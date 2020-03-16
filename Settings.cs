@@ -13,7 +13,7 @@ namespace GitPusher
         public static int numRemotes = 1;
         public static List<string> curRemote = new List<string>();
         //static string curbranchpre = "curbranch";-obselete
-        //static string curremotepre = "remote";-obselete
+        static string curremotepre = "remote";
         static string versionpre = "v";
 
         static Settings()
@@ -32,12 +32,12 @@ namespace GitPusher
             bool feedbackb = false;
             curBranchN = git.getBranchFeedback(out feedbackb);
 
-            bool feedbackr = false;
-            curRemote.Clear();
-            curRemote.AddRange(git.getRemoteNames(out feedbackr));
+            //bool feedbackr = false;
+            //curRemote.Clear();
+            //curRemote.AddRange(git.getRemoteNames(out feedbackr));
 
             bool worked = Settings.ReadDatFile(configDat);
-            if (worked & feedbackb & feedbackr)
+            if (worked & feedbackb)
                 PrintLoadSuccess();
             else
                 worked = false;
@@ -46,6 +46,32 @@ namespace GitPusher
         public static bool ReadDatFile(IniData myDat)//read success bool returned
         {
             bool success = false;
+
+            bool readremote = true;
+            try
+            {
+                //read remote
+                string remotearray = myDat["GitPusherSettings"][curremotepre];
+                string[] rarr = remotearray.Split(',');
+                curRemote.Clear();
+                //check to make sure there are no spaces on any of those
+                for (int i = 0; i < rarr.Length; i++)
+                {
+                    if (rarr[i].Contains(" "))
+                        rarr[i] = StringFilter.RemoveSpace(rarr[i]);
+                    curRemote.Add(rarr[i]);
+                    numRemotes = curRemote.Count;
+                }
+                //now no white spaces
+            }
+            catch
+            {
+                readremote = false;
+            }
+            if (readremote)
+                success = true;
+            else
+                return false;
 
             bool readversion = true;
             try
@@ -68,12 +94,6 @@ namespace GitPusher
             //got this far exit with a yay
             return success;
         }
-
-        private static string RemoveSpace(string inp)
-        {
-            return inp.Replace(" ", "");
-        }
-
         private static string getRemotesString(bool withspaces)
         {
             StringBuilder sb = new StringBuilder();
@@ -90,7 +110,6 @@ namespace GitPusher
             }
             return sb.ToString();
         }
-
         public static void PrintLoadSuccess()
         {
             UI.white();
@@ -102,13 +121,11 @@ namespace GitPusher
             Console.WriteLine();
             UI.white();
         }
-
         public static void PromptAddRemote()
         {
             Console.WriteLine("new remote name?");
             AddRemote(Console.ReadLine());
         }
-
         public static void ChangeCurBranch(string newBranch)
         {
             curBranchN = newBranch;
@@ -127,74 +144,70 @@ namespace GitPusher
             IniData data = parser.ReadFile(configFN);
             //save file
             data["GitPusherSettings"][versionpre] = VersionController.WriteVersionNoOnly();
+            data["GitPusherSettings"][curremotepre] = getRemotesString(false);
             parser.WriteFile(configFN, data);
         }
         public static void PromptChangeRemote()
         {
-            int i = getRemoteIndex("Select which remote to change");
+            int i = UI.getIndex("Select which remote to change", curRemote.ToArray());
             Console.WriteLine("new remote name?");
             ChangeRemote(i, Console.ReadLine());
         }
-        public static void CheckoutNewBranch(string branchname)
+        public static void CheckoutBranch(string branchname, bool newb)
         {
             curBranchN = branchname;
             string[] cmnds = new string[1];
-            cmnds[0] = git.g("-b " + branchname);
+            if (newb)
+                cmnds[0] = git.g("checkout -b " + branchname);
+            else
+                cmnds[0] = git.g("checkout " + branchname);
             string[] lineoutput = CMD.CMDcmdsLines(cmnds, true);
             SaveConfig();
         }
-        public static void PromptCheckoutNB()
+        private static void prompNB()
         {
-            //first work out if we want to chekout a 'new' branch?
-            //we might not
-            //can we use feedback for this
-            //I think we can by checking if we can checkout to it
-
             Console.WriteLine("new branch name?");
             string resp = Console.ReadLine();
             //make sure it isn't the same branch name naturally
             if (resp != curBranchN)
             {
                 if (!resp.Contains(" "))//no spaces?
-                    CheckoutNewBranch(resp);
+                    CheckoutBranch(resp, true);
             }
         }
-
+        public static void PromptCheckoutNB()
+        {
+            //first work out if we want to chekout a 'new' branch?
+            //we might not
+            //get list of all branches please
+            string[] brancN = git.getAllBranchNames();
+            if (brancN.Length == 1)//only the 1, making new
+            {
+                Console.WriteLine("Only 1 branch found, making new branch is the only option here");
+                prompNB();
+            }
+            else
+            {
+                //print them out please
+                int index = UI.getIndex("pick branch to checkout", brancN);
+                CheckoutBranch(brancN[index], false);
+            }
+           
+        }
         public static void AddRemote(string remoteN)
         {
             curRemote.Add(remoteN);
             numRemotes += 1;
             SaveConfig();
         }
-
         private static void removeRemIndex(int i)
         {
             curRemote.RemoveAt(i);
             numRemotes -= 1;
         }
-
-        private static void printRemoteIndexes(string msg)
-        {
-            Console.WriteLine(msg);
-            UI.green();
-            for (int i = 0; i < numRemotes; i++)
-            {
-                Console.WriteLine(curRemote[i] + "(" + i.ToString() + ")");
-            }
-            UI.white();
-            Console.WriteLine();
-        }
-
-        public static int getRemoteIndex(string msg)
-        {
-            printRemoteIndexes(msg);
-            string resp = Console.ReadLine();
-            return Convert.ToInt32(resp);
-        }
-
         public static void RemoveRemote()
         {
-            int gind = getRemoteIndex("select which remote to remove by index");
+            int gind = UI.getIndex("select which remote to remove by index", curRemote.ToArray());
             removeRemIndex(gind);
             SaveConfig();
         }
