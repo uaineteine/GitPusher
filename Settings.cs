@@ -43,8 +43,8 @@ namespace GitPusher
             bool readremote = true;
             try
             {
-                //read remote
-                string remotearray = parser.getDatFromKey(mainsec, curremotepre);
+                //read remoteb
+                string remotearray = parser.getDatFromKey(mainsec, curremotepre, out readremote);
                 string[] rarr = remotearray.Split(',');
                 curRemote.Clear();
                 //check to make sure there are no spaces on any of those
@@ -68,7 +68,7 @@ namespace GitPusher
             bool readversion = true;
             try
             {
-                string versionfile = parser.getDatFromKey(mainsec, versionpre);
+                string versionfile = parser.getDatFromKey(mainsec, versionpre, out readversion);
                 string curVersion = VersionController.WriteVersionNoOnly();
                 if (versionfile != curVersion)
                 {

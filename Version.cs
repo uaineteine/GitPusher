@@ -78,12 +78,17 @@ namespace GitPusher
     }
     public static class VersionController
     {
-        static Version curVers = new Version(new int[] { 2, 0}, "beta", false);
+        static Version curVers = new Version(new int[] { 2, 0, 1}, "beta", false);
 
         public static void WriteVersion()
         {
+            UI.white();
+            Console.Write("Current Version: ");
+            UI.yellow();
             string stringval = curVers.ToStr();
-            Console.WriteLine("Current Version: " + stringval);
+            Console.Write(stringval);
+            Console.Write(Environment.NewLine);
+            UI.white();
         }
 
         public static int compareToVersion(Version a)

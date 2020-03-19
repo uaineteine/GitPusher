@@ -15,9 +15,11 @@ namespace GitPusher
         static void Main(string[] args)
         {
             //version info print
-            UI.yellow();
             VersionController.WriteVersion();
-            UI.white();
+            //find out OS
+            OS.IdentifyOS();
+            OS.PrintOS();
+            UI.blank(1);
 
             //now check if there is an init folder
             git.IsInit();

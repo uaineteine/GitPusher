@@ -38,12 +38,16 @@ namespace GitPusher
                 sw.WriteLine(LHS[i] + "=" + RHS[i]);
             }
         }
-        public string get(string key)
+        public string get(string key, out bool success)
         {
+            success = false;
             for (int i = 0; i < n; i++)
             {
                 if (LHS[i] == key)
+                {
+                    success = true;
                     return RHS[i];
+                }
             }
             return "";
         }
@@ -110,12 +114,13 @@ namespace GitPusher
         {
             sections.Add(toAdd);
         }
-        public string get(string sec, string key)
+        public string get(string sec, string key, out bool success)
         {
+            success = false;
             for (int i = 0; i < sections.Count; i++)
             {
                 if (IniSec.makeSec(sections[i].SecName) == IniSec.makeSec(sec))
-                    return sections[i].get(key);
+                    return sections[i].get(key, out success);
             }
             return "";//else it didn't find it
         }
@@ -208,9 +213,9 @@ namespace GitPusher
             return worked;
         }
 
-        public string getDatFromKey(string sec, string key)
+        public string getDatFromKey(string sec, string key, out bool success)
         {
-            return theDat.get(sec, key);
+            return theDat.get(sec, key, out success);
         }
     }
 }
