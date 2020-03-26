@@ -12,11 +12,15 @@ Compling yourself: Use Visual Studio and the project file to create either a new
 
 Git
 
-This project is target for .NET core 3. It should be compliant with earlier versions of course, however when compiling with VS, one will have to change the project settings.
+This project is target for .NET core 2.1. It should be compliant with earlier versions of course, however when compiling with VS, one will have to change the project settings.
 
 Currently it is only developed for Windows but linux support is eyed for the future. See the [roadmap](#Roadmap) section below.
 
 ### Built With
+
+Since **Beta 2.0.3** the project has been built with a very simple INI parser library of my own design.
+
+* [INIParser](https://bitbucket.org/uaineteinestudio/iniparser) by [UaineTeine](https://bitbucket.org/uaineteinestudio/) - The INI file parser library which is required to compile the software.
 
 **Beta 1.0.3** and earlier versions required an Ini-Parser package:
 

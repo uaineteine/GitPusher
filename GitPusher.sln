@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29519.87
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1062
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitPusherNetCore", "GitPusherNetCore.csproj", "{422626D6-76F0-4F92-925E-A1375810ABCF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INIParser", "..\INIParser\INIParser.csproj", "{4882C120-7584-4ACE-B9B9-8F134AED1A05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{422626D6-76F0-4F92-925E-A1375810ABCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{422626D6-76F0-4F92-925E-A1375810ABCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{422626D6-76F0-4F92-925E-A1375810ABCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4882C120-7584-4ACE-B9B9-8F134AED1A05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4882C120-7584-4ACE-B9B9-8F134AED1A05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4882C120-7584-4ACE-B9B9-8F134AED1A05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4882C120-7584-4ACE-B9B9-8F134AED1A05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

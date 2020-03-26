@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <AssemblyName>GitPusher</AssemblyName>
     <RootNamespace>GitPusher</RootNamespace>
   </PropertyGroup>
@@ -15,6 +15,10 @@
   <ItemGroup>
     <EmbeddedResource Include="help.txt" />
     <EmbeddedResource Include="LICENSE" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\INIParser\INIParser.csproj" />
   </ItemGroup>
 
   <ItemGroup>
