@@ -2,11 +2,13 @@
 
 A source control productivity booster. This program stores your current development branch and remote, both committing and pushing all changes with a single argument input. This is ideal for rapid commits and pushing when the development becomes intense.
 
+![screen](https://raw.githubusercontent.com/uaineteine/GitPusher/release/screenshots/b2.0.3.png)
+
 **Note:** this program is in beta, bugs are to be expected until full release.
 
 ### Requires:
 
-Git
+Git- but if you're getting this here, then you should have this already.
 
 This project is target for .NET core 2.1. It should be compliant with earlier versions of course, however when compiling with VS, one will have to change the project settings.
 
@@ -45,6 +47,10 @@ git config credential.helper store
 
 * **Daniel Stamer-Squair** - *UaineTeine*
 
+Copyright © 2019-2021 Daniel Stamer-Squair
+
+I developed this app during my honours year to minimise the risk to RSI.
+    
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
