@@ -2,9 +2,11 @@
 
 A source control productivity booster. This program stores your current development branch and remote, both committing and pushing all changes with a single argument input. This is ideal for rapid commits and pushing when the development becomes intense.
 
+I developed this app during my honours year to minimise the risk to RSI.
+
 ![screen](https://raw.githubusercontent.com/uaineteine/GitPusher/release/screenshots/b2.0.3.png)
 
-**Note:** this program is in beta, bugs are to be expected until full release.
+**Note:** this program is in beta bugs are to be expected until full release, however please report any findings to me and I will attempt fix them ASAP :)
 
 ### Requires:
 
@@ -38,7 +40,7 @@ Open terminal and use .NET core to build with:
 dotnet publish -c release -r ubuntu.16.04-x64 --self-contained
 ```
 
-For either platform the built app into your working directory. Git creditional storing is required in that project folder. Set with:
+For either platform, place the built app into your working directory and run. Git creditional storing is required in that project folder. Set with:
 ```
 git config credential.helper store
 ```
@@ -47,9 +49,7 @@ git config credential.helper store
 
 * **Daniel Stamer-Squair** - *UaineTeine*
 
-Copyright © 2019-2021 Daniel Stamer-Squair
-
-I developed this app during my honours year to minimise the risk to RSI.
+Copyright Â© 2019-2021 Daniel Stamer-Squair
     
 ## License
 
