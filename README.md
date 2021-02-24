@@ -4,10 +4,6 @@ A source control productivity booster. This program stores your current developm
 
 **Note:** this program is in beta, bugs are to be expected until full release.
 
-## Getting Started
-
-Compling yourself: Use Visual Studio and the project file to create either a new project to be modified or add to a solution for use as a DLL.
-
 ### Requires:
 
 Git
@@ -34,7 +30,7 @@ Use Visual Studio to build the project file into an executable, deploy to the wo
 
 ##### Building with Linux:
 
-Open terminal/cmd and use .NET core to build with:
+Open terminal and use .NET core to build with:
 
 ```
 dotnet publish -c release -r ubuntu.16.04-x64 --self-contained
