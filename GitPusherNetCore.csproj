@@ -18,7 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Uaine.VersionController" Version="1.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\INIParser\INIParser.csproj" />
+    <ProjectReference Include="..\Packages\INIParser\INIParser.csproj" />
   </ItemGroup>
 
   <ItemGroup>
